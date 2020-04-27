@@ -1,0 +1,127 @@
+html, body{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #aaa;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.sher {
+  width: 75%;
+  height: 100%;
+  min-width: 600px;
+  margin: auto;
+  background-color: royalblue;
+  display: grid;
+  grid-template-rows: 15% 75% 1fr;
+}
+
+.header {
+  display: grid;
+  grid-template-rows: 25% 1fr;
+  background-color: #485ab8;
+}
+
+.song-title {
+  padding-top: 0.2em;
+  color: #ffffff;
+  text-align: center;
+  font-size: large;
+}
+
+.status-bar {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.process-bar {
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.controler {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  justify-items: center;
+  font-size: 22px;
+}
+
+.speed-controler, .time-controler, .volume-controler {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  
+  grid-template-columns: 1fr 4fr;
+}
+
+.time-controler {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.time-controler i {
+  opacity: .5;
+}
+
+.time-controler i:hover {
+  opacity: 1;
+}
+
+.volume-controler {
+  grid-template-columns: 4fr 1fr;
+}
+
+
+.main {
+  position: relative;
+}
+
+.toggle-preview {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 30px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.toggle-preview i {
+  opacity: .2;
+}
+
+.toggle-preview i:hover {
+  opacity: 1;
+}
+
+.creator {
+  width: 100%;
+  height: 100%;
+}
+
+.preview {
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.footer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  justify-items: center;
+  font-size: 45px;
+  background-color: #3855ad;
+}
+
+.sher i {
+  cursor: pointer;
+}
