@@ -43,6 +43,11 @@ html, body{
   justify-items: center;
 }
 
+.seek-bar {
+  width: 100%;
+  height: 100%;
+}
+
 .controler {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
@@ -60,6 +65,27 @@ html, body{
   
   grid-template-columns: 1fr 4fr;
 }
+
+.speed-controler > div, .volume-controler > div {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.speed-controler {
+  justify-items: start;
+}
+
+.speed-controler div:last-child, .volume-controler div:first-child {
+  width: 60%;
+}
+
+.volume-controler {
+  justify-items: end;
+}
+
 
 .time-controler {
   grid-template-columns: 1fr 1fr 1fr;
