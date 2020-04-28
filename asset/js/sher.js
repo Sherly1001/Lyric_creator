@@ -1,5 +1,3 @@
-import SherRangeInput from './SherRangeInput.js';
-
 document.addEventListener('DOMContentLoaded', e => {
   let print = console.log;
 
