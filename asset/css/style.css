@@ -110,8 +110,8 @@ html, body{
 
 .toggle-preview {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: .5em;
+  top: .5em;
   width: 1.5em;
   height: 1.5em;
   font-size: 30px;
@@ -128,19 +128,38 @@ html, body{
   opacity: 1;
 }
 
-.creator {
+.creator, .preview {
   width: 100%;
   height: 100%;
-  display: grid;
-  align-items: center;
-  justify-items: center;
+  overflow: scroll;
+  padding: 1em 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.creator::-webkit-scrollbar, .preview::-webkit-scrollbar {
+  height: 0;
+  width: 0.5em;
+}
+
+.creator::-webkit-scrollbar-thumb, .preview::-webkit-scrollbar-thumb {
+  background-color: #41a6e1;
 }
 
 .pre-load-lyric {
+  position: relative;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  width: 10em;
-  height: 30%;
-  display: grid;
+  width: 14em !important;
+  height: 45% !important;
+  grid-template: none !important;
 }
 
 .pre-load-lyric > div {
@@ -164,9 +183,34 @@ html, body{
   box-shadow: 0 0 2em 1em #000000;
 }
 
-.preview {
+.creator > div {
+  box-sizing: border-box;
+  padding: .5em;
   width: 100%;
-  height: 100%;
+  height: 3em;
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.creator .time-stamp {
+  font-family: monospace;
+  font-size: large;
+}
+
+.creator .lyric {
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+}
+
+.sher-focus {
+  outline: .3em solid #ffffff;
+  /* box-shadow: 0 .3em .3em #ffffff, 0 -0.3em .3em #ffffff  ; */
+}
+
+.preview {
   display: none;
 }
 
