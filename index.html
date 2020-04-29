@@ -11,7 +11,7 @@
 <body>
   <div class="sher">
     <div class="header">
-      <div class="song-title"><span>sher sher sher</span></div>
+      <div class="song-title"></div>
       <div class="status-bar">
         <div class="process-bar">
           <div class="current-time">
@@ -36,7 +36,7 @@
             <div class="play-pause">
               <i class="fas fa-play"></i>
             </div>
-            <div class="forawrd">
+            <div class="forward">
               <i class="fas fa-forward"></i>
             </div>
           </div>
@@ -66,9 +66,11 @@
       </div>
       <div class="upload-song-icon">
         <i class="fas fa-music"></i>
+        <input type="file" accept="audio/*" class="load-mp3">
       </div>
       <div class="upload-lyric-icon">
         <i class="fas fa-file-upload"></i>
+        <input type="file" accept="text/plain,.lrc" class="load-lrc">
       </div>
       <div class="more-setting">
         <div class="more-panel">
@@ -80,6 +82,9 @@
           <i class="fas fa-cog"></i>
         </div>
       </div>
+    </div>
+    <div class="audio-container">
+      <video src="" class="audio"></video>
     </div>
   </div>
   <script src="asset/js/SherRangeInput.js"></script>

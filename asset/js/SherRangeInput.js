@@ -100,7 +100,7 @@ let SherRangeInput;
     }
   
     rangeInput.oninput = e => {
-      sherRange.updateRange();
+      sherRange.value();
     };
   
     if (show_value) {
@@ -117,7 +117,7 @@ let SherRangeInput;
     sherRange.appendChild(rangeFiller);
     sherRange.appendChild(rangeInput);
 
-    sherRange.updateRange = vl => {
+    sherRange.value = vl => {
       if (rangeInput.min <= vl && vl <= rangeInput.max) rangeInput.value = vl;
       let pc = (rangeInput.value - rangeInput.min) / (rangeInput.max - rangeInput.min);
       pc = (pc + (0.5 - pc) * thumbWidth / rangeInput.clientWidth) * 100;
@@ -126,6 +126,7 @@ let SherRangeInput;
         show_value.innerText = rangeInput.value;
         show_value.style.left = pc + '%';
       }
+      return rangeInput.value;
     };
   
     parent.appendChild(sherRange);

@@ -227,3 +227,7 @@ html, body{
 .sher i {
   cursor: pointer;
 }
+
+.load-mp3, .load-lrc, .audio, .audio-container {
+  display: none;
+}
