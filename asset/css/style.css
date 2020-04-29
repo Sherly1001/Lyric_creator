@@ -135,6 +135,7 @@ html, body{
   padding: 1em 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  position: relative;
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -152,21 +153,19 @@ html, body{
 }
 
 .pre-load-lyric {
-  position: relative;
-  top: 35%;
+  position: absolute;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  width: 14em !important;
-  height: 45% !important;
+  width: 25% !important;
   grid-template: none !important;
+  justify-items: unset !important;
 }
 
 .pre-load-lyric > div {
-  width: 100%;
   margin: 1em;
   padding: .5em;
-  margin: auto;
   cursor: pointer;
   border-radius: 2em;
   background-color: #b3b3b3;
