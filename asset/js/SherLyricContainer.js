@@ -1,5 +1,3 @@
-let print = console.log;
-
 class SherLyricContainer {
   constructor(ctnElm, focusCss, timeCss, lyricCss) {
     this.ctnElm = ctnElm;

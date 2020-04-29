@@ -78,8 +78,9 @@ html, body{
   justify-items: start;
 }
 
-.speed-controler div:last-child, .volume-controler div:first-child {
+.speed-controler > div:last-child, .volume-controler > div:first-child {
   width: 60%;
+  opacity: 0;
 }
 
 .volume-controler {
@@ -106,6 +107,11 @@ html, body{
 
 .main {
   position: relative;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .toggle-preview {
@@ -118,6 +124,7 @@ html, body{
   display: grid;
   align-items: center;
   justify-items: center;
+  z-index: 1;
 }
 
 .toggle-preview i {
@@ -136,11 +143,6 @@ html, body{
   box-sizing: border-box;
   scroll-behavior: smooth;
   position: relative;
-
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 .creator::-webkit-scrollbar, .preview::-webkit-scrollbar {
