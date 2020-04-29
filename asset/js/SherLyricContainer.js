@@ -50,12 +50,6 @@ class SherLyricContainer {
         e.preventDefault();
         this.focus(this.curElm.nextElementSibling);
       }
-    } else {
-      if (e.keyCode == 13)  {
-        e.preventDefault();
-        this.curElm.querySelector(`.${this.lyricCss}`).removeAttribute('contentEditable');
-        this.isEdit = false;
-      }
     }
   }
   saveTime(time) {

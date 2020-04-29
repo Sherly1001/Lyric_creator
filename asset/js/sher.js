@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', e => {
     let w = 0;
     let interval = setInterval(() => {
       if (w < 60) {
-        speed[1].style.width = ++w + '%';
+        speed[1].style.width = (w += 5) + '%';
       } else {
         clearInterval(interval);
       }
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', e => {
     let w = 0;
     let interval = setInterval(() => {
       if (w < 60) {
-        volume[0].style.width = ++w + '%';
+        volume[0].style.width = (w += 5) + '%';
       } else {
         clearInterval(interval);
       }
@@ -114,6 +114,52 @@ document.addEventListener('DOMContentLoaded', e => {
   }
 
 
+
+
+  lrcInput.onchange = e => {
+    let file = e.target.files[0];
+    if (file) {
+      let reader = new FileReader();
+      reader.onload = e => {
+        let lrcs = reader.result.replace(/\[.*\]\s*\n?/gi, '');
+        let newLineChr = String.fromCharCode(13);
+        creator.ctnElm.innerHTML = '';
+        lrcs.split('\n').forEach(lrc => {
+          creator.addLyric(lrc == newLineChr ? '...' : lrc);
+        });
+        creator.focus(creator.ctnElm.firstElementChild);
+      }
+      reader.readAsText(file);
+    }
+  }
+
+
+  creator.ctnElm.addEventListener('dblclick', e => {
+    if (e.target.className == 'lyric') {
+      e.target.setAttribute('contentEditable', true);
+      e.target.addEventListener('focusout', e => {
+        e.target.removeAttribute('contentEditable');
+      });
+      e.target.focus();
+      creator.isEdit = true;
+    }
+  });
+  document.onkeydown = e => {
+    if (creator.isEdit && e.keyCode == 13) {
+      let lrc = creator.curElm.querySelector('.lyric');
+      lrc.removeAttribute('contentEditable');
+      lrc.innerText = lrc.innerText.replace(/^[\.\s]*(.*?\.?)[\.\s]*$/, '$1');
+      if (/^\W*$/i.test(lrc.innerText)) lrc.innerText = '...';
+      creator.isEdit = false;
+    } else {
+      if (e.keyCode == 13 && creator.curElm) {
+        creator.saveTime(audio.currentTime);
+        creator.focus(creator.curElm.nextElementSibling);
+      } else if (e.key == 'h' && !creator.isEdit) {
+        creator.focus(creator.ctnElm.firstElementChild);
+      }
+    }
+  }
 
 
   playPauseBtn.onclick = togglePlay;
