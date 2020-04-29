@@ -72,7 +72,7 @@ let SherRangeInput;
     }
   `;
   
-  document.getElementsByTagName('head')[0].appendChild(style);
+  document.head.appendChild(style);
   
   SherRangeInput = function(parent, min_input = 0, max_input = 1, step_input = 1, value = 0, show_value = true) {
     let sherRange = createElement('div', 'sher-range-input');
