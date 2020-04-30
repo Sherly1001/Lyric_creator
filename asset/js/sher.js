@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', e => {
   let mp3Input = document.querySelector('.load-mp3');
   let lrcInput = document.querySelector('.load-lrc');
 
+  let mucis = {};
+  mucis.ti = '';
+  mucis.ar = '';
+
   document.querySelector('.upload-song-icon i').onclick = e => mp3Input.click();
   document.querySelector('.upload-song-button').onclick = e => mp3Input.click();
   document.querySelector('.upload-lyric-icon i').onclick = e => lrcInput.click();
@@ -226,6 +230,7 @@ document.addEventListener('DOMContentLoaded', e => {
   playPauseBtn.onclick = togglePlay;
   document.querySelector('.backward i').onclick = e => audioSeek(-2);
   document.querySelector('.forward i').onclick = e => audioSeek(2);
+  document.querySelector('.save-lyric i').onclick = e => saveLrc();
 
   function togglePlay() {
     if (audio.currentSrc) {
@@ -240,5 +245,27 @@ document.addEventListener('DOMContentLoaded', e => {
   }
   function audioSeek(s) {
     audio.currentTime -= -s;
+  }
+  function saveLrc() {
+    let filename = document.querySelector('.song-title').innerText;
+    if (filename) {
+      let lyric = `[ar:${mucis.ar}]\n[ti:${mucis.ti}]\n[length:${creator.convertTime(audio.duration)}]\n\n`;
+      let txt = '';
+      for (let i = creator.ctnElm.firstElementChild; i; i = i.nextElementSibling) {
+        txt = i.querySelector('.lyric').innerText;
+        lyric += `${i.querySelector('.time-stamp').innerText} ${txt == '...' ? '' : txt + ''}\n`;
+      }
+      saveAs(lyric, filename.replace(/^(.*)\..*$/, '$1.lrc'), 'text/plain');
+    }
+  }
+  function saveAs(data, filename, type) {
+    let file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, filename);
+    else {
+      let a = document.createElement('a');
+      a.href = URL.createObjectURL(file);
+      a.download = filename;
+      a.click();
+    }
   }
 });
