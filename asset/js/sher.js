@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', e => {
   let seek = document.querySelector('.seek-bar');
   let speed = document.querySelectorAll('.speed-controler div');
   let volume = document.querySelectorAll('.volume-controler div');
+  
+  let togglePreview = document.querySelector('.toggle-preview i');
 
   let audio = document.querySelector('.audio');
   let mp3Input = document.querySelector('.load-mp3');
@@ -26,8 +28,12 @@ document.addEventListener('DOMContentLoaded', e => {
     return `<div><div class="time-stamp">${this.convertTime(time)}</div><div class="lyric">${lrc}</div></div>`;
   }
   let preview = new SherLyricContainer(document.querySelector('.preview'), 'sher-focus', 'time-stamp', 'lyric');
+  preview.convertTime = function(timeStr) {
+    timeStr = timeStr.replace(/(\[|\])/g, '').split(':');
+    return parseInt(timeStr[0]) * 60 + parseFloat(timeStr[1]);
+  }
   preview.lyricHTML = function(lrc, time) {
-    return `<div><div class="time-stamp">${time}</div><div class="lyric">${lrc}</div></div>`;
+    return `<div><div class="lyric" time-stamp="${preview.convertTime(time)}">${lrc}</div></div>`;
   }
 
   speed[0].parentElement.onmouseenter = e => {
@@ -100,6 +106,18 @@ document.addEventListener('DOMContentLoaded', e => {
   audio.ontimeupdate = e => {
     curTimeElm.innerText = creator.convertTime(audio.currentTime).replace(/(\[|\])/g, '');
     seekInput.value(audio.currentTime);
+
+    if (preview.curElm) {
+      for (let elm = preview.ctnElm.firstElementChild; elm.nextElementSibling; elm = elm.nextElementSibling) {
+        if (elm.firstElementChild.getAttribute('time-stamp') <= audio.currentTime && audio.currentTime < elm.nextElementSibling.firstElementChild.getAttribute('time-stamp')) {
+          preview.focus(elm);
+          break;
+        }
+      }
+      if (preview.ctnElm.lastElementChild.firstElementChild.getAttribute('time-stamp') <= audio.currentTime) {
+        preview.focus(preview.ctnElm.lastElementChild);
+      }
+    }
   }
 
   
@@ -152,12 +170,55 @@ document.addEventListener('DOMContentLoaded', e => {
       if (/^\W*$/i.test(lrc.innerText)) lrc.innerText = '...';
       creator.isEdit = false;
     } else {
-      if (e.keyCode == 13 && creator.curElm) {
+      if (e.keyCode == 13 && creator.curElm && preview.ctnElm.style.display != 'block') {
         creator.saveTime(audio.currentTime);
         creator.focus(creator.curElm.nextElementSibling);
       } else if (e.key == 'h' && !creator.isEdit) {
         creator.focus(creator.ctnElm.firstElementChild);
+      } else if (e.keyCode == 32) {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.keyCode == 37) {
+        e.preventDefault();
+        audioSeek(-2);
+      } else if (e.keyCode == 39) {
+        e.preventDefault();
+        audioSeek(2);
+      } else if (e.keyCode == 80) {
+        togglePreview.click();
       }
+    }
+  }
+
+  creator.ctnElm.addEventListener('click', e => {
+    if (creator.curElm) {
+      let time = preview.convertTime(creator.curElm.querySelector('.time-stamp').innerText);
+      if (isFinite(time) && 0 <= time && time <= audio.duration) audio.currentTime = time;
+    }
+  });
+  preview.ctnElm.addEventListener('click', e => {
+    let elm = e.target.className == 'lyric' ? e.target : e.target.firstElementChild;
+    elm = elm.getAttribute('time-stamp');
+    if (isFinite(elm) && 0 <= elm && elm <= audio.duration) audio.currentTime = elm;
+  });
+
+  togglePreview.onclick = e => {
+    if (!audio.paused) togglePlay();
+    if (creator.ctnElm.style.display != 'none') {
+      if (!creator.curElm) return;
+      preview.ctnElm.innerHTML = '';
+      Array.from(creator.ctnElm.children).forEach(elm => {
+        preview.addLyric(elm.querySelector('.lyric').innerText, elm.querySelector('.time-stamp').innerText);
+      });
+      creator.ctnElm.style.display = 'none';
+      preview.ctnElm.style.display = 'block';
+      preview.focus(preview.ctnElm.firstElementChild);
+      audio.currentTime = 0;
+    } else {
+      preview.ctnElm.style.display = 'none';
+      creator.ctnElm.style.display = 'block';
+      preview.ctnElm.innerHTML = '';
+      preview.curElm = null;
     }
   }
 

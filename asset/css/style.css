@@ -184,7 +184,7 @@ html, body{
   box-shadow: 0 0 2em 1em #000000;
 }
 
-.creator > div {
+.creator > div, .preview > div {
   box-sizing: border-box;
   padding: .5em;
   width: 100%;
@@ -213,6 +213,11 @@ html, body{
 
 .preview {
   display: none;
+}
+
+.preview > div {
+  grid-template-columns: none;
+  cursor: pointer;
 }
 
 .footer {
