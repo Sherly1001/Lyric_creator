@@ -38,8 +38,11 @@ class SherLyricContainer {
 
 
   onfocusout(e) {
+    let lrc = this.curElm.querySelector(`.${this.lyricCss}`);
+    lrc.removeAttribute('contentEditable');
+    lrc.innerText = lrc.innerText.replace(/^[\.\s]*(.*?\.?)[\.\s]*$/, '$1');
+    if (/^\W*$/i.test(lrc.innerText)) lrc.innerText = '...';
     this.isEdit = false;
-    e.target.removeAttribute('contentEditable');
   }
   onkeydown(e) {
     if (!this.isEdit) {
