@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', e => {
   let volume = document.querySelectorAll('.volume-controler div');
   
   let togglePreview = document.querySelector('.toggle-preview i');
+  let lrcEditCtn = document.querySelector('.lyric-edit');
 
   let audio = document.querySelector('.audio');
   let mp3Input = document.querySelector('.load-mp3');
@@ -150,6 +151,8 @@ document.addEventListener('DOMContentLoaded', e => {
           creator.addLyric(lrc == newLineChr ? '...' : lrc);
         });
         creator.focus(creator.ctnElm.firstElementChild);
+        lrcEditCtn.style.display = 'grid';
+        lrcInput.value = '';
       }
       reader.readAsText(file);
     }
@@ -161,13 +164,16 @@ document.addEventListener('DOMContentLoaded', e => {
       e.target.setAttribute('contentEditable', true);
       e.target.addEventListener('focusout', e => {
         e.target.removeAttribute('contentEditable');
+        e.target.innerText = e.target.innerText.replace(/^[\.\s]*(.*?\.?)[\.\s]*$/, '$1');
+        if (/^\W*$/i.test(e.target.innerText)) e.target.innerText = '...';
       });
       e.target.focus();
       creator.isEdit = true;
     }
   });
   document.onkeydown = e => {
-    if (creator.isEdit && e.keyCode == 13) {
+    if (creator.isEdit) {
+      if (e.keyCode != 13) return;
       let lrc = creator.curElm.querySelector('.lyric');
       lrc.removeAttribute('contentEditable');
       lrc.innerText = lrc.innerText.replace(/^[\.\s]*(.*?\.?)[\.\s]*$/, '$1');
@@ -175,9 +181,8 @@ document.addEventListener('DOMContentLoaded', e => {
       creator.isEdit = false;
     } else {
       if (e.keyCode == 13 && creator.curElm && preview.ctnElm.style.display != 'block') {
-        creator.saveTime(audio.currentTime);
-        creator.focus(creator.curElm.nextElementSibling);
-      } else if (e.key == 'h' && !creator.isEdit) {
+        saveTime();
+      } else if (e.key == 'h') {
         creator.focus(creator.ctnElm.firstElementChild);
       } else if (e.keyCode == 32) {
         e.preventDefault();
@@ -190,6 +195,15 @@ document.addEventListener('DOMContentLoaded', e => {
         audioSeek(2);
       } else if (e.keyCode == 80) {
         togglePreview.click();
+      } else if (e.keyCode == 75) {
+        if (creator.curElm) creator.focus(creator.curElm.previousElementSibling);
+      } else if (e.keyCode == 74) {
+        if (creator.curElm) creator.focus(creator.curElm.nextElementSibling);
+      } else if (e.keyCode == 65) {
+        e.preventDefault();
+        addLrc();
+      } else if (e.ctrlKey && e.keyCode == 88) {
+        delLrc();
       }
     }
   }
@@ -218,11 +232,13 @@ document.addEventListener('DOMContentLoaded', e => {
       preview.ctnElm.style.display = 'block';
       preview.focus(preview.ctnElm.firstElementChild);
       audio.currentTime = 0;
+      lrcEditCtn.style.display = 'none';
     } else {
       preview.ctnElm.style.display = 'none';
       creator.ctnElm.style.display = 'block';
       preview.ctnElm.innerHTML = '';
       preview.curElm = null;
+      lrcEditCtn.style.display = 'grid';
     }
   }
 
@@ -231,6 +247,10 @@ document.addEventListener('DOMContentLoaded', e => {
   document.querySelector('.backward i').onclick = e => audioSeek(-2);
   document.querySelector('.forward i').onclick = e => audioSeek(2);
   document.querySelector('.save-lyric i').onclick = e => saveLrc();
+
+  document.querySelector('.lyric-save-time-stamp').onclick =  e => saveTime();
+  document.querySelector('.lyric-delete').onclick = e => delLrc();
+  document.querySelector('.lyric-add').onclick = e => addLrc();
 
   function togglePlay() {
     if (audio.currentSrc) {
@@ -267,5 +287,26 @@ document.addEventListener('DOMContentLoaded', e => {
       a.download = filename;
       a.click();
     }
+  }
+  function addLrc() {
+    creator.addLyric('', NaN, true);
+  }
+  function delLrc() {
+    if (creator.curElm) {
+      let delElm = creator.curElm;
+      if (delElm.nextElementSibling) creator.focus(delElm.nextElementSibling);
+      else if (delElm.previousElementSibling) creator.focus(delElm.previousElementSibling);
+      else creator.curElm = null;
+      delElm.remove();
+      creator.isEdit = false;
+    }
+  }
+  function saveTime() {
+    if (creator.isEdit) {
+      creator.curElm.removeAttribute('contentEditable');
+      creator.isEdit = false;
+    }
+    creator.saveTime(audio.currentTime);
+    creator.focus(creator.curElm.nextElementSibling);
   }
 });

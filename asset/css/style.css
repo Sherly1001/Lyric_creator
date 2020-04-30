@@ -135,6 +135,38 @@ html, body{
   opacity: 1;
 }
 
+.lyric-edit {
+  position: absolute;
+  right: .5em;
+  bottom: .5em;
+  font-size: 30px;
+  z-index: 1;
+  display: none;
+  grid-template-rows: repeat(3, 1fr);
+  grid-row-gap: 0.5em;
+  align-items: center;
+  justify-items: center;
+}
+
+.lyric-edit > div {
+  width: 100%;
+  height: 100%;
+  padding: 0.4em;
+  background-color: #aaa;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  border-radius: .5em;
+  box-shadow: 0 0 .5em .1em #000;
+}
+
+.lyric-edit > div:active {
+  box-shadow: 0 0 .3em .3em #000;
+  background-color: #999;
+}
+
 .creator, .preview {
   width: 100%;
   height: 100%;
