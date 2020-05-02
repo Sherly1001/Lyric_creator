@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', e => {
   
   let togglePreview = document.querySelector('.toggle-preview i');
   let lrcEditCtn = document.querySelector('.lyric-edit');
+  
+  let addTi = document.querySelector('.add-song-name');
+  let addAr = document.querySelector('.add-artist');
 
   let audio = document.querySelector('.audio');
   let mp3Input = document.querySelector('.load-mp3');
@@ -18,6 +21,7 @@ document.addEventListener('DOMContentLoaded', e => {
   let mucis = {};
   mucis.ti = '';
   mucis.ar = '';
+  mucis.ip = false;
 
   document.querySelector('.upload-song-icon i').onclick = e => mp3Input.click();
   document.querySelector('.upload-song-button').onclick = e => mp3Input.click();
@@ -41,43 +45,17 @@ document.addEventListener('DOMContentLoaded', e => {
     return `<div><div class="lyric" time-stamp="${preview.convertTime(time)}">${lrc}</div></div>`;
   }
 
-  speed[0].parentElement.onmouseenter = e => {
-    speed[1].style.width = 0;
-    speed[1].style.opacity = 1;
-    let w = 0;
-    let interval = setInterval(() => {
-      if (w < 60) {
-        speed[1].style.width = (w += 5) + '%';
-      } else {
-        clearInterval(interval);
-      }
-    });
-  }
-  speed[0].parentElement.onmouseleave = e => {
-    speed[1].style.opacity = 0;
-    speed[1].style.width = 0;
-  }
+  speed[0].parentElement.onmouseenter = e => speed[1].style.opacity = 1;
+  speed[0].parentElement.onmouseleave = e => speed[1].style.opacity = 0;
+
   speed[0].onclick = e => {
     audio.playbackRate = 1;
     speedInput.value(1);
   }
 
-  volume[0].parentElement.onmouseenter = e => {
-    volume[0].style.width = 0;
-    volume[0].style.opacity = 1;
-    let w = 0;
-    let interval = setInterval(() => {
-      if (w < 60) {
-        volume[0].style.width = (w += 5) + '%';
-      } else {
-        clearInterval(interval);
-      }
-    });
-  }
-  volume[0].parentElement.onmouseleave = e => {
-    volume[0].style.opacity = 0;
-    volume[0].style.width = 0;
-  }
+  volume[0].parentElement.onmouseenter = e => volume[0].style.opacity = 1;
+  volume[0].parentElement.onmouseleave = e => volume[0].style.opacity = 0;
+
   volume[1].onclick = e => {
     audio.volume = 0.8;
     volumeInput.value(0.8);
@@ -179,7 +157,7 @@ document.addEventListener('DOMContentLoaded', e => {
       lrc.innerText = lrc.innerText.replace(/^[\.\s]*(.*?\.?)[\.\s]*$/, '$1');
       if (/^\W*$/i.test(lrc.innerText)) lrc.innerText = '...';
       creator.isEdit = false;
-    } else {
+    } else if (!mucis.ip) {
       if (e.keyCode == 13 && creator.curElm && preview.ctnElm.style.display != 'block') {
         saveTime();
       } else if (e.key == 'h') {
@@ -204,6 +182,10 @@ document.addEventListener('DOMContentLoaded', e => {
         addLrc();
       } else if (e.ctrlKey && e.keyCode == 88) {
         delLrc();
+      }
+    } else {
+      if (e.keyCode == 13) {
+        mucisInfo();
       }
     }
   }
@@ -251,6 +233,56 @@ document.addEventListener('DOMContentLoaded', e => {
   document.querySelector('.lyric-save-time-stamp').onclick =  e => saveTime();
   document.querySelector('.lyric-delete').onclick = e => delLrc();
   document.querySelector('.lyric-add').onclick = e => addLrc();
+
+  let moreBtn = document.querySelector('.more-setting i');
+  let morePanel = document.querySelector('.more-panel');
+  let sherfcelm = document.querySelector('.sher-focus-out-elm');
+  let help = document.querySelector('.help');
+  moreBtn.onclick = e => {
+    if (morePanel.style.top != '-9em') {
+      morePanel.style.top = '-9em';
+      moreBtn.style.transform = 'rotate(-30deg)';
+      sherfcelm.style.display = 'block';
+      help.style.top = '-100%';
+    } else {
+      morePanel.style.top = '150%';
+      moreBtn.removeAttribute('style');
+      sherfcelm.style.display = 'none';
+    }
+  }
+  sherfcelm.onclick = e => {
+    morePanel.style.top = '150%';
+    moreBtn.removeAttribute('style');
+    sherfcelm.style.display = 'none';
+    mucisInfo();
+    help.style.top = '-100%';
+  }
+
+  document.querySelector('.show-help').onclick = e => {
+    morePanel.style.top = '150%';
+    moreBtn.removeAttribute('style');
+    showHelp();
+  };
+  document.querySelector('.help-button').onclick = showHelp;
+
+  addTi.children[0].onclick = e => {
+    addTi.style.left = '-100%';
+    setTimeout(() => {
+      addTi.children[1].focus();
+      mucis.ip = true;
+    }, 250);
+  }
+  addTi.children[1].addEventListener('focusout', mucisInfo);
+
+  addAr.children[0].onclick = e => {
+    addAr.style.left = '-100%';
+    setTimeout(() => {
+      addAr.children[1].focus();
+      mucis.ip = true;
+    }, 250);
+  }
+  addAr.children[1].addEventListener('focusout', mucisInfo);
+
 
   function togglePlay() {
     if (audio.currentSrc) {
@@ -308,5 +340,18 @@ document.addEventListener('DOMContentLoaded', e => {
     }
     creator.saveTime(audio.currentTime);
     creator.focus(creator.curElm.nextElementSibling);
+  }
+  function mucisInfo() {
+    addTi.style.left = 0;
+    mucis.ti = addTi.children[1].value;
+    addAr.style.left = 0;
+    mucis.ar = addAr.children[1].value;
+    mucis.ip = false;
+  }
+  function showHelp() {
+    sherfcelm.style.display = 'block';
+    setTimeout(() => {
+      help.style.top = '50%';
+    }, 0);
   }
 });

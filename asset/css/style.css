@@ -81,6 +81,7 @@ html, body{
 .speed-controler > div:last-child, .volume-controler > div:first-child {
   width: 60%;
   opacity: 0;
+  transition: all 200ms ease-out;
 }
 
 .volume-controler {
@@ -160,6 +161,7 @@ html, body{
   border: 1px solid #000;
   border-radius: .5em;
   box-shadow: 0 0 .5em .1em #000;
+  cursor: pointer;
 }
 
 .lyric-edit > div:active {
@@ -267,4 +269,141 @@ html, body{
 
 .load-mp3, .load-lrc, .audio, .audio-container {
   display: none;
+}
+
+.more-setting {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.more-panel {
+  position: absolute;
+  font-size: large;
+  top: 150%;
+  width: 60%;
+  background-color: #aaa;
+  border-radius: 1em;
+  box-shadow: 0 0 1em .3em #000;
+  cursor: pointer;
+  transition: top 150ms ease-out;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.more-setting i {
+  position: relative;
+  z-index: 10;
+}
+
+.more-panel > div {
+  position: relative;
+  left: 0;
+  width: 100%;
+  height: 3em;
+  display: grid;
+  grid-template-columns: 100% 100%;
+  transition: left 200ms ease-in-out;
+}
+
+.more-panel > div:first-child {
+  border-bottom: 1px solid #000;
+}
+
+.more-panel > div:nth-child(2) {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+.more-panel > div:last-child {
+  border-top: 1px solid #000;
+}
+
+.more-panel > div > div {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.more-panel input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: large;
+  text-indent: 0.5em;
+}
+
+.sher-focus-out-elm {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 9;
+}
+
+.help {
+  padding: 1em;
+  position: relative;
+  width: 40%;
+  height: 60%;
+  top: -100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: top 200ms ease-in-out;
+  background-color: #aaa;
+  border-radius: 2em;
+  box-shadow: 0 0 3em 2em;
+}
+
+.help i {
+  cursor: default;
+}
+
+.help h2, .help h4 {
+  margin: 0;
+}
+
+.help .about div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.help .about div a {
+  justify-self: end;
+  text-decoration: none;
+  color: #000;
+}
+
+.help .shortkeys > div, .more-setting-help > div {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+}
+
+.sher-vr {
+  background-color: #fff;
+}
+
+.help .shortkeys2, .more-setting-help > div > div:last-child {
+  padding-left: 1em;
+}
+
+.sher-shortkey {
+  height: 1.8em;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.lyric-v1 {
+  margin-top: .8em;
 }

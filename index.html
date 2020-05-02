@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lyric creator v2</title>
+  <title>Lyric Creator v2</title>
   <link rel="stylesheet" href="asset/css/all.min.css">
   <link rel="stylesheet" href="asset/css/style.css">
   <link rel="icon" href="">
@@ -85,9 +85,17 @@
       </div>
       <div class="more-setting">
         <div class="more-panel">
-          <div class="add-song-name"></div>
-          <div class="add-artist"></div>
-          <div class="show-help"></div>
+          <div class="add-song-name">
+            <div><span>Song name</span></div>
+            <input type="text">
+          </div>
+          <div class="add-artist">
+            <div><span>Artist</span></div>
+            <input type="text">
+          </div>
+          <div class="show-help">
+            <div>Help</div>
+          </div>
         </div>
         <div>
           <i class="fas fa-cog"></i>
@@ -96,6 +104,85 @@
     </div>
     <div class="audio-container">
       <video src="" class="audio"></video>
+    </div>
+    <div class="sher-focus-out-elm">
+      <div class="help">
+        <div class="about">
+          <h2><i class="fas fa-music"></i> Lyric Creator V2</h2>
+          <hr>
+          <div>
+            <span>By Sherly1001</span>
+            <a href="https://github.com/Sherly1001/Lyric_creator" target="blank">Github repo <i class="fab fa-github"></i></a>
+          </div>
+          <hr>
+        </div>
+        <div class="shortkeys">
+          <h4>Shortkeys</h4>
+          <hr>
+          <div>
+            <div class="shortkeys1">
+              <div class="sher-shortkey">
+                <div>Space</div><div>Play / pause</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>Left</div><div>Backward 2s</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>Right</div><div>Forward 2s</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>P</div><div>Toggle preview</div>
+              </div>
+            </div>
+            <div class="sher-vr"></div>
+            <div class="shortkeys2">
+              <div class="sher-shortkey">
+                <div>Up / k</div><div>Previous lyric</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>Down / j</div><div>Next lyric</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>Enter</div><div>Save timestamp</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>A</div><div>Add a lyric</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>Ctrl+x</div><div>Delete a lyric</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="more-setting-help">
+          <h4>More settings</h4>
+          <hr>
+          <div>
+            <div>
+              <div class="sher-shortkey">
+                <div>Song name</div><div>Add song name to lrc file</div>
+              </div>
+              <div class="sher-shortkey">
+                <div><i class="fas fa-running"></i></div><div>Reset playback rate</div>
+              </div>
+            </div>
+            <div class="sher-vr"></div>
+            <div>
+              <div class="sher-shortkey">
+                <div>Artist</div><div>Add artist to lrc file</div>
+              </div>
+              <div class="sher-shortkey">
+                <div><i class="fas fa-volume-down"></i></div><div>Reset to default volume</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lyric-v1">
+          <h4>Lyric Creator V1?</h4>
+          <hr>
+          <span>Where is lyric creator v1??? <a href="#" onclick="alert('Just kidding, have no Lyric Creator version 1. :p');">Here</a></span>
+        </div>
+      </div>
     </div>
   </div>
   <script src="asset/js/SherRangeInput.js"></script>
