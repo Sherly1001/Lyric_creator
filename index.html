@@ -6,7 +6,7 @@
   <title>Lyric Creator v2</title>
   <link rel="stylesheet" href="asset/css/all.min.css">
   <link rel="stylesheet" href="asset/css/style.css">
-  <link rel="icon" href="">
+  <link rel="icon" href="asset/img/icon.png">
 </head>
 <body>
   <div class="sher">
@@ -89,6 +89,10 @@
             <div><span>Song name</span></div>
             <input type="text">
           </div>
+          <div class="add-author">
+            <div><span>Author</span></div>
+            <input type="text">
+          </div>
           <div class="add-artist">
             <div><span>Artist</span></div>
             <input type="text">
@@ -133,14 +137,23 @@
               <div class="sher-shortkey">
                 <div>P</div><div>Toggle preview</div>
               </div>
+              <div class="sher-shortkey">
+                <div>Ctrl+Shift+V</div><div>Load lyric from clipboard</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>Ctrl+Shift+M</div><div>Load song from url</div>
+              </div>
             </div>
             <div class="sher-vr"></div>
             <div class="shortkeys2">
               <div class="sher-shortkey">
-                <div>Up / k</div><div>Previous lyric</div>
+                <div>Up / K</div><div>Previous lyric</div>
               </div>
               <div class="sher-shortkey">
-                <div>Down / j</div><div>Next lyric</div>
+                <div>Down / J</div><div>Next lyric</div>
+              </div>
+              <div class="sher-shortkey">
+                <div>H</div><div>Go first lyric</div>
               </div>
               <div class="sher-shortkey">
                 <div>Enter</div><div>Save timestamp</div>
@@ -149,7 +162,7 @@
                 <div>A</div><div>Add a lyric</div>
               </div>
               <div class="sher-shortkey">
-                <div>Ctrl+x</div><div>Delete a lyric</div>
+                <div>Ctrl+X</div><div>Delete a lyric</div>
               </div>
             </div>
           </div>
@@ -163,7 +176,7 @@
                 <div>Song name</div><div>Add song name to lrc file</div>
               </div>
               <div class="sher-shortkey">
-                <div><i class="fas fa-running"></i></div><div>Reset playback rate</div>
+                <div>Click <i class="fas fa-running"></i></div><div>Reset playback rate</div>
               </div>
             </div>
             <div class="sher-vr"></div>
@@ -172,7 +185,7 @@
                 <div>Artist</div><div>Add artist to lrc file</div>
               </div>
               <div class="sher-shortkey">
-                <div><i class="fas fa-volume-down"></i></div><div>Reset to default volume</div>
+                <div>Click <i class="fas fa-volume-down"></i></div><div>Reset to default volume</div>
               </div>
             </div>
           </div>
@@ -180,7 +193,7 @@
         <div class="lyric-v1">
           <h4>Lyric Creator V1?</h4>
           <hr>
-          <span>Where is lyric creator v1??? <a href="#" onclick="alert('Just kidding, have no Lyric Creator version 1. :p');">Here</a></span>
+          <span>Where is lyric creator v1??? <a onclick="alert('Just kidding, have no Lyric Creator version 1. :p');">Here</a></span>
         </div>
       </div>
     </div>

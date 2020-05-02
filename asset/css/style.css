@@ -315,16 +315,16 @@ html, body{
 }
 
 .more-panel > div:first-child {
-  border-bottom: 1px solid #000;
-}
-
-.more-panel > div:nth-child(2) {
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-top: none;
 }
 
 .more-panel > div:last-child {
+  border-bottom: none;
+}
+
+.more-panel > div {
   border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
 }
 
 .more-panel > div > div {
@@ -356,7 +356,7 @@ html, body{
   padding: 1em;
   position: relative;
   width: 40%;
-  height: 60%;
+  height: 65%;
   top: -100%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -371,7 +371,7 @@ html, body{
 }
 
 .help h2, .help h4 {
-  margin: 0;
+  margin: .5em 0 0 0;
 }
 
 .help .about div {
@@ -404,6 +404,8 @@ html, body{
   grid-template-columns: 1fr 2fr;
 }
 
-.lyric-v1 {
-  margin-top: .8em;
+.lyric-v1 a {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
 }

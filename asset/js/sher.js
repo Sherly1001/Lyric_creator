@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', e => {
-  let print = console.log;
-
   let playPauseBtn = document.querySelector('.play-pause i');
   let curTimeElm = document.querySelector('.current-time span');
 
@@ -12,16 +10,18 @@ document.addEventListener('DOMContentLoaded', e => {
   let lrcEditCtn = document.querySelector('.lyric-edit');
   
   let addTi = document.querySelector('.add-song-name');
+  let addAu = document.querySelector('.add-author');
   let addAr = document.querySelector('.add-artist');
 
   let audio = document.querySelector('.audio');
   let mp3Input = document.querySelector('.load-mp3');
   let lrcInput = document.querySelector('.load-lrc');
 
-  let mucis = {};
-  mucis.ti = '';
-  mucis.ar = '';
-  mucis.ip = false;
+  let music = {};
+  music.ti = '';
+  music.au = '';
+  music.ar = '';
+  music.ip = false;
 
   document.querySelector('.upload-song-icon i').onclick = e => mp3Input.click();
   document.querySelector('.upload-song-button').onclick = e => mp3Input.click();
@@ -60,8 +60,6 @@ document.addEventListener('DOMContentLoaded', e => {
     audio.volume = 0.8;
     volumeInput.value(0.8);
   }
-
-
 
 
   mp3Input.onchange = e => {
@@ -122,13 +120,7 @@ document.addEventListener('DOMContentLoaded', e => {
     if (file) {
       let reader = new FileReader();
       reader.onload = e => {
-        let lrcs = reader.result.replace(/\[.*\]\s*\n?/gi, '');
-        let newLineChr = String.fromCharCode(13);
-        creator.ctnElm.innerHTML = '';
-        lrcs.split('\n').forEach(lrc => {
-          creator.addLyric(lrc == newLineChr ? '...' : lrc);
-        });
-        creator.focus(creator.ctnElm.firstElementChild);
+        loadNewLrc(reader.result);
         lrcEditCtn.style.display = 'grid';
         lrcInput.value = '';
       }
@@ -157,7 +149,15 @@ document.addEventListener('DOMContentLoaded', e => {
       lrc.innerText = lrc.innerText.replace(/^[\.\s]*(.*?\.?)[\.\s]*$/, '$1');
       if (/^\W*$/i.test(lrc.innerText)) lrc.innerText = '...';
       creator.isEdit = false;
-    } else if (!mucis.ip) {
+    } else if (music.ip) {
+      if (e.keyCode == 13) {
+        musicInfo();
+      }
+    } else if (sherfcelm.style.display == 'block') {
+      e.preventDefault();
+      sherfcelm.style.display = 'none';
+      help.style.top = '-100%';
+    } else {
       if (e.keyCode == 13 && creator.curElm && preview.ctnElm.style.display != 'block') {
         saveTime();
       } else if (e.key == 'h') {
@@ -182,10 +182,11 @@ document.addEventListener('DOMContentLoaded', e => {
         addLrc();
       } else if (e.ctrlKey && e.keyCode == 88) {
         delLrc();
-      }
-    } else {
-      if (e.keyCode == 13) {
-        mucisInfo();
+      } else if (e.ctrlKey && e.key == 'V') {
+        navigator.clipboard.readText().then(lrcs => loadNewLrc(lrcs));
+      } else if (e.ctrlKey && e.key == 'M') {
+        e.preventDefault();
+        loadSongUrl();
       }
     }
   }
@@ -239,8 +240,8 @@ document.addEventListener('DOMContentLoaded', e => {
   let sherfcelm = document.querySelector('.sher-focus-out-elm');
   let help = document.querySelector('.help');
   moreBtn.onclick = e => {
-    if (morePanel.style.top != '-9em') {
-      morePanel.style.top = '-9em';
+    if (morePanel.style.top != '-12em') {
+      morePanel.style.top = '-12em';
       moreBtn.style.transform = 'rotate(-30deg)';
       sherfcelm.style.display = 'block';
       help.style.top = '-100%';
@@ -254,7 +255,7 @@ document.addEventListener('DOMContentLoaded', e => {
     morePanel.style.top = '150%';
     moreBtn.removeAttribute('style');
     sherfcelm.style.display = 'none';
-    mucisInfo();
+    musicInfo();
     help.style.top = '-100%';
   }
 
@@ -269,19 +270,28 @@ document.addEventListener('DOMContentLoaded', e => {
     addTi.style.left = '-100%';
     setTimeout(() => {
       addTi.children[1].focus();
-      mucis.ip = true;
+      music.ip = true;
     }, 250);
   }
-  addTi.children[1].addEventListener('focusout', mucisInfo);
+  addTi.children[1].addEventListener('focusout', musicInfo);
+
+  addAu.children[0].onclick = e => {
+    addAu.style.left = '-100%';
+    setTimeout(() => {
+      addAu.children[1].focus();
+      music.ip = true;
+    }, 250);
+  }
+  addAu.children[1].addEventListener('focusout', musicInfo);
 
   addAr.children[0].onclick = e => {
     addAr.style.left = '-100%';
     setTimeout(() => {
       addAr.children[1].focus();
-      mucis.ip = true;
+      music.ip = true;
     }, 250);
   }
-  addAr.children[1].addEventListener('focusout', mucisInfo);
+  addAr.children[1].addEventListener('focusout', musicInfo);
 
 
   function togglePlay() {
@@ -301,7 +311,7 @@ document.addEventListener('DOMContentLoaded', e => {
   function saveLrc() {
     let filename = document.querySelector('.song-title').innerText;
     if (filename) {
-      let lyric = `[ar:${mucis.ar}]\n[ti:${mucis.ti}]\n[length:${creator.convertTime(audio.duration)}]\n\n`;
+      let lyric = `[ti:${music.ti}]\n[au:${music.au}]\n[ar:${music.ar}]\n[length:${creator.convertTime(audio.duration).replace(/(\[|\])/g, '')}]\n\n`;
       let txt = '';
       for (let i = creator.ctnElm.firstElementChild; i; i = i.nextElementSibling) {
         txt = i.querySelector('.lyric').innerText;
@@ -334,6 +344,7 @@ document.addEventListener('DOMContentLoaded', e => {
     }
   }
   function saveTime() {
+    if (!creator.curElm) return;
     if (creator.isEdit) {
       creator.curElm.removeAttribute('contentEditable');
       creator.isEdit = false;
@@ -341,17 +352,85 @@ document.addEventListener('DOMContentLoaded', e => {
     creator.saveTime(audio.currentTime);
     creator.focus(creator.curElm.nextElementSibling);
   }
-  function mucisInfo() {
+  function musicInfo() {
     addTi.style.left = 0;
-    mucis.ti = addTi.children[1].value;
+    music.ti = addTi.children[1].value;
     addAr.style.left = 0;
-    mucis.ar = addAr.children[1].value;
-    mucis.ip = false;
+    music.au = addAu.children[1].value;
+    addAu.style.left = 0;
+    music.ar = addAr.children[1].value;
+    music.ip = false;
   }
   function showHelp() {
     sherfcelm.style.display = 'block';
     setTimeout(() => {
       help.style.top = '50%';
     }, 0);
+  }
+  function loadNewLrc(lrcs) {
+    if (!lrcs || typeof lrcs != 'string') return;
+    lrcs = lrcs.split('\n');
+    let s = [];
+    let i = 0;
+    for (; i < lrcs.length; ++i) {
+      if (/\[ti:.*\]/i.test(lrcs[i])) {
+        music.ti = lrcs[i].replace(/\[ti:(.*)\]/i, '$1');
+        addTi.children[1].value = music.ti;
+        continue;
+      }
+      if (/\[au:.*\]/i.test(lrcs[i])) {
+        music.au = lrcs[i].replace(/\[au:(.*)\]/i, '$1');
+        addAu.children[1].value = music.au;
+        continue;
+      }
+      if (/\[ar:.*\]/i.test(lrcs[i])) {
+        music.ar = lrcs[i].replace(/\[ar:(.*)\]/i, '$1');
+        addAr.children[1].value = music.ar;
+        continue;
+      }
+      if (/\[\d+.*\]/.test(lrcs[i])) break;
+      if (i == lrcs.length - 1) {
+        i = 0;
+        music.ti = '';
+        music.au = '';
+        music.ar = '';
+        addTi.children[1].value = '';
+        addAu.children[1].value = '';
+        addAr.children[1].value = '';
+        break;
+      }
+    }
+
+    while (i < lrcs.length) {
+      let time = preview.convertTime(lrcs[i].replace(/\[(.*)\]\s*/, '$1'));
+      let lrc = lrcs[i].replace(/\[.*\]\s*/, '');
+      if (/^\W*$/i.test(lrc)) lrc = '...';
+      s.push([time, lrc]);
+      ++i;
+    }
+    creator.ctnElm.innerHTML = '';
+    s.forEach(i => {
+      creator.addLyric(i[1], i[0]);
+    });
+
+    creator.focus(creator.ctnElm.firstElementChild);
+  }
+  async function tryFetch(url) {
+    return fetch(url);
+  }
+  async function loadSongUrl() {
+    let src = prompt('Enter Music Url:');
+    if (!src) return;
+    if (!/^https?:\/\/.+$/i.test(src)) {
+      alert('Invalid url');
+      return;
+    }
+    try {
+      await tryFetch(src);
+      audio.src = src;
+      document.querySelector('.song-title').innerText = src.replace(/^(.*\/)?(.*?)(\?.*)?$/, '$2');
+    } catch {
+      alert('Invalid url');
+    }
   }
 });
